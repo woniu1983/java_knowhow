@@ -206,27 +206,9 @@ public class EmailHelper {
 			text_part.setText(text + "\n", CHARSET);	// append \n so that attachment will be add to next line, if any
 			multipart.addBodyPart(text_part);
 
-			//			// set attachment
-			//			if(attachment != null && attachment.length != 0)
-			//			{
-			//				MimeBodyPart attachment_part = new MimeBodyPart();
-			//				File file =null;
-			//				for(int i=0;i<attachment.length;i++){
-			//				file = new File(attachment[i]);
-			//				}
-			//				attachment_part.attachFile(file);
-			//				attachment_part.setFileName(MimeUtility.encodeText(file.getName()));
-			//				multipart.addBodyPart(attachment_part);
-			//			}
-			//			
-			//			message.setContent(multipart);
-
-			// set attachment相较注释过代码修改了传多个附件时只有最后一个传过去的
-			//问题。zhangxiao-2017/8/2
-			if(attachment != null && attachment.length != 0)
-			{	
+			if(attachment != null && attachment.length != 0) {	
 				File file =null;
-				for(int i=0;i<attachment.length;i++){
+				for(int i=0;i<attachment.length;i++) {
 					MimeBodyPart attachment_part = new MimeBodyPart();
 					file = new File(attachment[i]);
 					attachment_part.attachFile(file);
