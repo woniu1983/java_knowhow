@@ -2,7 +2,7 @@
 Some normal usage Util class.
 
 
-## 2018-05-03 Mao
+## 2018-05-03 
 - StringUtils.java  		String相关操作<br>
 - Base64.java				Base64编码
 - FileUtil.java				File相关操作
@@ -14,7 +14,7 @@ Some normal usage Util class.
 - ByteUtility.java			字符串和16进制显示字符串转换
 - IPv4Util.java				Ipv4格式化和检查
 
-## 2018-05-02 Mao
+## 2018-05-02 
 - EmailHelper.java  		发送邮件功能， 支持SSL，支持附件
 - SmbUtils.java     		共享目录访问， 只支持SMBv1
 
