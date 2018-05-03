@@ -4,6 +4,9 @@
  */ 
 package cn.woniu.common;
 
+import java.text.DecimalFormat;
+import java.util.StringTokenizer;
+
 /** 
  * @ClassName: StringUtils <br/> 
  * @Description: 字符串常用操作  <br/> 
@@ -153,4 +156,123 @@ public class StringUtils {
             }
         }
         return new String(chars);
-    }}
+    }
+
+    /**
+     * 
+     * @Title: fill  
+     * @Description: 返回指定个数的char组成的字符串  
+     *
+     * @param size
+     * @param pattern
+     * @return
+     */
+	public static String fill(int size, char pattern) {
+		if (size == 0) {
+			return "";
+		}
+
+		String str = "";
+		for (int i = 0; i < size; i++) {
+			str += pattern;
+		}
+		return str;
+	}
+
+	/**
+	 * 
+	 * @Title: paddingIPaddress  
+	 * @Description: 将IP地址格式化为 000.000.000.000 
+	 *
+	 * @param strIPAddress
+	 * @return
+	 */
+	public static String paddingIPaddress(String strIPAddress) {
+		if (strIPAddress == null || strIPAddress.equals("")) {
+			return strIPAddress;
+		}
+
+		DecimalFormat ipFormat = new DecimalFormat("000");
+		String strDelimitter = ".";
+
+		StringBuffer buff = new StringBuffer();
+		StringTokenizer st = new StringTokenizer(strIPAddress, strDelimitter);
+
+		try {
+			while (st.hasMoreTokens()) {
+				String strIpToken = st.nextToken();
+				String strIP = ipFormat.format(new Integer(strIpToken));
+				strIP += strDelimitter;
+				buff.append(strIP);
+			}
+			buff.deleteCharAt(buff.length() - 1);
+			return buff.toString();
+		} catch (NumberFormatException e) {
+			return strIPAddress;
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: isNumberString  
+	 * @Description: 判断字符串是不是数字  
+	 *
+	 * @param str
+	 * @return boolean
+	 */
+	public static boolean isNumberString(String str) {
+		int len = str.length();
+		for (int i = 0; i < len; i++) {
+			char c = str.charAt(i);
+			if (c < '0' || c > '9') {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 
+	 * @Title: parseBoolean  
+	 * @Description: 判断字符串是不是Boolean[true], 否则全部为false  
+	 *
+	 * @param str
+	 * @return
+	 */
+	public static boolean parseBoolean(String str) {
+		if (str == null || str.length() == 0) {
+			return false;
+		} else if (str.equalsIgnoreCase("true")) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * 
+	 * @Title: isIncludedChar  
+	 * @Description: 判断字符串str中是否包含特定的字符数组(char[])  
+	 *
+	 * @param str
+	 * @param compChars
+	 * @return
+	 */
+	public static boolean isIncludedChar(String str, char[] compChars) {
+		if (str == null || str.length() == 0) {
+			return false;
+		}
+		if (compChars == null || compChars.length == 0) {
+			return false;
+		}
+		char[] temp = str.toCharArray();
+		for (int i = 0; i < temp.length; i++){
+			for (int j = 0; j < compChars.length; j++) {
+				if (temp[i] == compChars[j]){
+					return true;
+				}
+			}
+		}
+		return false;
+	}    
+}
