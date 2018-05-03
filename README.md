@@ -13,6 +13,7 @@ Some normal usage Util class.
 - DateTimeUtility.java		日期时间类			
 - ByteUtility.java			字符串和16进制显示字符串转换
 - IPv4Util.java				Ipv4格式化和检查
+- SQLiteDBUtils.java		SQLite JDBC4
 
 ## 2018-05-02 
 - EmailHelper.java  		发送邮件功能， 支持SSL，支持附件

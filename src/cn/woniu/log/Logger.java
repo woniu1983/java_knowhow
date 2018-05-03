@@ -1,5 +1,5 @@
 /** 
- * Copyright (c) 2018, RITS All Rights Reserved. 
+ * Copyright (c) 2018, Woniu1983 All Rights Reserved. 
  * 
  */ 
 package cn.woniu.log;

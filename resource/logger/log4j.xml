@@ -77,7 +77,7 @@
       <priority value="info" />  
     </category>  
     
-    <logger name="cn.com.rits" additivity="false">   
+    <logger name="cn.woniu" additivity="false">   
            <level value="debug" />
            <appender-ref ref="Log.All.File" /> 
            <appender-ref ref="Log.All.Console" /> 
