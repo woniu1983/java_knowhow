@@ -227,5 +227,43 @@ public class FileUtil {
 		return -1;
 	}
 	
+	/**
+	 * 读取文件内容，存储到String对象中，针对小文件
+	 * 大文件切勿使用
+	*/
+	public static String readFromFile(String srcFilePath) {
+		if (srcFilePath == null || srcFilePath.trim().isEmpty()) {
+			return "";
+		}
+		
+		StringBuilder builder = new StringBuilder();
+		
+		File logFile = new File(srcFilePath);
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(logFile), "UTF-8"));
+			String line = "";
+			while ((line = reader.readLine()) != null) {
+				builder.append(line);
+				builder.append("\r\n");
+			}
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (reader != null) {
+				try {
+					reader.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		
+		return builder.toString();
+	}
 	
 }
