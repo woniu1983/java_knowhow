@@ -8,6 +8,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Properties;
 
+import javax.activation.CommandMap;
+import javax.activation.MailcapCommandMap;
 import javax.mail.Authenticator;
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -26,7 +28,7 @@ import javax.mail.internet.MimeUtility;
 
 /** 
  * @ClassName: EmailHelper <br/> 
- * @Description: TODO  <br/> 
+ * @Description: Support SMTP Sending  <br/> 
  * 
  * @author woniu1983 
  * @date: 2018年5月2日 上午8:51:43 <br/>
@@ -75,6 +77,15 @@ public class EmailHelper {
 	}
 	public boolean send(String sender, String[] to, String subject, String text, String[] attachment)
 	{
+
+		MailcapCommandMap mc = (MailcapCommandMap) CommandMap.getDefaultCommandMap();
+		mc.addMailcap("text/html;; x-Java-content-handler=com.sun.mail.handlers.text_html");
+		mc.addMailcap("text/xml;; x-java-content-handler=com.sun.mail.handlers.text_xml");
+		mc.addMailcap("text/plain;; x-java-content-handler=com.sun.mail.handlers.text_plain");
+		mc.addMailcap("multipart/*;; x-java-content-handler=com.sun.mail.handlers.multipart_mixed");
+		mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
+		CommandMap.setDefaultCommandMap(mc);
+
 		Session session = getSession();
 		if(session == null)
 		{
@@ -301,29 +312,56 @@ public class EmailHelper {
 	}
 
 	public static void main(String[] args) {
-		String server = "10.10.10.246";
-		String port = "465";
-		SSL_TYPE ssl = SSL_TYPE.TLS;
+		
+		testMail();
+		
+//		String server = "10.10.10.246";
+//		String port = "465";
+//		SSL_TYPE ssl = SSL_TYPE.TLS;
+//
+//		String username = "mail01@test.com.cn";
+//		String password = "12345678";
+//		EmailHelper helper = new EmailHelper(server, port, ssl);
+//		helper.setAuthentication(username, password);
+//
+//		String sender = "a";
+//		String[] to = new String[]{"mail01@test.com.cn"};
+//		String subject = "test from admin tool";
+//		String text = "test text";
+//
+//		// 发送邮件
+//		helper.send(sender, to, subject, text, null);
+//
+//		// 检查邮箱服务器连接
+//		boolean result = helper.checkConnection();
+//		System.out.println(result);
+//
+//		// 检查邮件是否可用
+//		boolean result2 = EmailHelper.isEmailValid("abc@test.com.cn");
+	}
+	
+	private static void testMail() {
+		String server = "172.25.72.12";
+		String port = "25";
+		SSL_TYPE ssl = SSL_TYPE.NONE;
 
-		String username = "mail01@test.com.cn";
+		String username = "maojianghui@rst.ricoh.com";
 		String password = "12345678";
 		EmailHelper helper = new EmailHelper(server, port, ssl);
 		helper.setAuthentication(username, password);
 
 		String sender = "a";
-		String[] to = new String[]{"mail01@test.com.cn"};
-		String subject = "test from admin tool";
+		String[] to = new String[]{"maojianghui@rst.ricoh.com"};
+		String subject = "test from Eclipse";
 		String text = "test text";
-
-		// 发送邮件
-		helper.send(sender, to, subject, text, null);
 
 		// 检查邮箱服务器连接
 		boolean result = helper.checkConnection();
 		System.out.println(result);
 
-		// 检查邮件是否可用
-		boolean result2 = EmailHelper.isEmailValid("abc@test.com.cn");
+		// 发送邮件
+		helper.send(sender, to, subject, text, null);
+		
 	}
 
 
