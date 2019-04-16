@@ -6,7 +6,7 @@ package cn.woniu.common;
 import org.json.JSONObject;
 
 /**
- * @author maojianghui
+ * @author woniu
  *
  */
 public class JSONUtils {

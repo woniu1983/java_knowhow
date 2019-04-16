@@ -341,17 +341,17 @@ public class EmailHelper {
 	}
 	
 	private static void testMail() {
-		String server = "172.25.72.12";
+		String server = "192.168.1.111";
 		String port = "25";
 		SSL_TYPE ssl = SSL_TYPE.NONE;
 
-		String username = "maojianghui@rst.ricoh.com";
+		String username = "woniu@test.com";
 		String password = "12345678";
 		EmailHelper helper = new EmailHelper(server, port, ssl);
 		helper.setAuthentication(username, password);
 
 		String sender = "a";
-		String[] to = new String[]{"maojianghui@rst.ricoh.com"};
+		String[] to = new String[]{"woniu@test.com"};
 		String subject = "test from Eclipse";
 		String text = "test text";
 

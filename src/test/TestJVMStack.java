@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 /**
- * @author maojianghui
+ * @author woniu
  *
  */
 public class TestJVMStack {
@@ -82,7 +82,7 @@ public class TestJVMStack {
 			InputStream in = null;
 			try {
 
-				Process process = run.exec("cmd.exe /c java -jar C:\\Users\\maojianghui\\eclipse-workspace\\TestCase\\jar\\test.jar");
+				Process process = run.exec("cmd.exe /c java -jar C:\\Users\\woniu\\eclipse-workspace\\TestCase\\jar\\test.jar");
 
 				in = process.getInputStream();
 
