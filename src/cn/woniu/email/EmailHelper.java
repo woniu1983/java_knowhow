@@ -6,6 +6,7 @@ package cn.woniu.email;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 import javax.activation.CommandMap;
@@ -25,6 +26,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
 
+import com.sun.mail.util.MailSSLSocketFactory;
+
 
 /** 
  * @ClassName: EmailHelper <br/> 
@@ -37,6 +40,11 @@ import javax.mail.internet.MimeUtility;
  */
 public class EmailHelper {
 	private final String SMTP_TIMEOUT = "15000";		// in million seconds
+
+    /**
+     * TODO 有些公司可能不支持将mail.from设置为和sender的邮箱不同的值 ， 即两者必须相同
+     */
+    String mailFrom = "sender@PrintServer";
 
 	String server;
 	String port;
@@ -86,7 +94,7 @@ public class EmailHelper {
 		mc.addMailcap("message/rfc822;; x-java-content-handler=com.sun.mail.handlers.message_rfc822");
 		CommandMap.setDefaultCommandMap(mc);
 
-		Session session = getSession();
+		Session session = getSession(sender);
 		if(session == null)
 		{
 			return false;
@@ -108,7 +116,7 @@ public class EmailHelper {
 	}
 
 	public boolean sendTestMail(String sender, String[] to, String subject, String content) {
-		Session session = getSession();
+		Session session = getSession(sender);
 		if(session == null)
 		{
 			return false;
@@ -129,9 +137,9 @@ public class EmailHelper {
 		return isSuccess;
 	}
 
-	public boolean checkConnection()
+	public boolean checkConnection(String sender)
 	{
-		Session session = getSession();
+		Session session = getSession(sender);
 		if(checkConnection(session))
 		{
 			return true;
@@ -159,22 +167,36 @@ public class EmailHelper {
 		return isSuccess;
 	}
 
-	private Session getSession()
+	private Session getSession(String sender)
 	{
 		Properties properties = new Properties();
 		properties.setProperty("mail.smtp.host", server);
 		properties.setProperty("mail.smtp.port", port);
 		properties.setProperty("mail.smtp.connectiontimeout", SMTP_TIMEOUT);
 		properties.setProperty("mail.smtp.timeout", SMTP_TIMEOUT);
+        // TODO 有些公司可能不支持将mail.from设置为和sender的邮箱不同的值 ， 即两者必须相同
+        if (sender == null || sender.trim().isEmpty()) {
+            properties.setProperty("mail.from", mailFrom);
+        } else {
+            properties.setProperty("mail.from", sender);
+        }
 
 		switch(ssl)
 		{
 		case SSL:
 			properties.setProperty("mail.smtp.ssl.enable", "true");
-			properties.setProperty("mail.smtp.socketFactory.port", port);
-			properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-			properties.setProperty("mail.smtp.socketFactory.fallback", "false");
 			properties.setProperty("mail.smtp.ssl.trust", server);
+//			properties.setProperty("mail.smtp.socketFactory.port", port);
+//			properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+//			properties.setProperty("mail.smtp.socketFactory.fallback", "false");
+            MailSSLSocketFactory sf;
+            try {
+                sf = new MailSSLSocketFactory();
+                sf.setTrustAllHosts(true);
+                properties.put("mail.smtp.ssl.socketFactory", sf);
+            } catch (GeneralSecurityException e) {
+                e.printStackTrace();
+            }
 			break;
 		case TLS:
 			properties.setProperty("mail.smtp.starttls.enable", "true");
@@ -345,18 +367,18 @@ public class EmailHelper {
 		String port = "25";
 		SSL_TYPE ssl = SSL_TYPE.NONE;
 
-		String username = "woniu@test.com";
+		String username = "woniu";
 		String password = "12345678";
 		EmailHelper helper = new EmailHelper(server, port, ssl);
 		helper.setAuthentication(username, password);
 
-		String sender = "a";
+		String sender = "woniu@test.com";
 		String[] to = new String[]{"woniu@test.com"};
 		String subject = "test from Eclipse";
 		String text = "test text";
 
 		// 检查邮箱服务器连接
-		boolean result = helper.checkConnection();
+		boolean result = helper.checkConnection(sender);
 		System.out.println(result);
 
 		// 发送邮件
